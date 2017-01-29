@@ -76,30 +76,42 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Arrow.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Creature.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="InputSystem.h" />
+    <ClInclude Include="Match.h" />
     <ClInclude Include="MenuSystem.h" />
     <ClInclude Include="MessageSystem.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="RenVector.h" />
     <ClInclude Include="ResourceDefines.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Sound.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Arrow.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="InputSystem.cpp" />
+    <ClCompile Include="Match.cpp" />
     <ClCompile Include="MenuSystem.cpp" />
     <ClCompile Include="MessageSystem.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="RenVector.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="winMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="arrow.png" />
+    <Image Include="Cursor.png" />
+    <Image Include="selector.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

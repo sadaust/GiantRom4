@@ -19,6 +19,12 @@
     <Filter Include="Source Files\Engine">
       <UniqueIdentifier>{bb847899-77f6-457a-9fbb-ede99fe127e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ChuChu">
+      <UniqueIdentifier>{b0e92b62-07ff-486f-b410-f680f4a2c29e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ChuChu">
+      <UniqueIdentifier>{4d038fe8-4dfe-461d-ac4f-62e60c82de1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h">
@@ -53,6 +59,18 @@
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\ChuChu</Filter>
+    </ClInclude>
+    <ClInclude Include="Match.h">
+      <Filter>Header Files\ChuChu</Filter>
+    </ClInclude>
+    <ClInclude Include="Creature.h">
+      <Filter>Header Files\ChuChu</Filter>
+    </ClInclude>
+    <ClInclude Include="Arrow.h">
+      <Filter>Header Files\ChuChu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -89,5 +107,25 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\ChuChu</Filter>
+    </ClCompile>
+    <ClCompile Include="Match.cpp">
+      <Filter>Source Files\ChuChu</Filter>
+    </ClCompile>
+    <ClCompile Include="Arrow.cpp">
+      <Filter>Source Files\ChuChu</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Cursor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="selector.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="arrow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
