@@ -116,6 +116,9 @@
     <ClCompile Include="Arrow.cpp">
       <Filter>Source Files\ChuChu</Filter>
     </ClCompile>
+    <ClCompile Include="Creature.cpp">
+      <Filter>Source Files\ChuChu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Cursor.png">
@@ -125,6 +128,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="arrow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="base.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

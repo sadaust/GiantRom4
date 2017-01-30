@@ -3,9 +3,12 @@
 
 #include "Player.h"
 #include "Arrow.h"
+#include "Creature.h"
 #include <string>
 #define sizeX 12
 #define sizeY 9
+#define maxCreatures 1
+
 class Match {
 private:
 	float gridWidth;
@@ -13,6 +16,7 @@ private:
 	Player players[2];
 	Arrow arrows[2][3];
 	int curArrow[2];
+	Creature critters[maxCreatures];
 	std::string inputInfo[2][8];
 public:
 	void init();

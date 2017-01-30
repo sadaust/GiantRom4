@@ -48,7 +48,8 @@ void Match::init() {
 	for(int i = 0; i < 2; ++i) {
 		players[i].init();
 		players[i].setColor(playerCol[i]);
-		players[i].setCur(vector(0,i,0));
+		players[i].setCur(vector(3+(5*i),4,0));
+		players[i].setGoal(3+(5*i),4);
 		curArrow[i] = 0;
 		for(int z = 0; z < 3; ++z) {
 			arrows[i][z].init();
@@ -76,6 +77,14 @@ void Match::render() {
 		D3DXMatrixTranslation(&mat,vec.x*gridWidth+(gridWidth*0.5f),vec.y*gridHeight+(gridHeight*0.5f),vec.z);
 		D3DXMatrixMultiply(&ren.matrix,&ren.matrix,&mat);
 		Engine::instance()->addRender(ren);
+		D3DXMatrixIdentity(&mat);
+		ren = players[i].baseRen();
+		vec = players[i].getGoal();
+		D3DXMatrixScaling(&ren.matrix,gridWidth/256.0f,gridHeight/256.0f,1);
+		D3DXMatrixTranslation(&mat,vec.x*gridWidth+(gridWidth*0.5f),vec.y*gridHeight+(gridHeight*0.5f),vec.z);
+		D3DXMatrixMultiply(&ren.matrix,&ren.matrix,&mat);
+		Engine::instance()->addRender(ren);
+
 		for(int z = 0; z < 3; ++z) {
 			if(arrows[i][z].isActive()) {
 				D3DXMatrixIdentity(&mat);
@@ -121,8 +130,11 @@ void Match::update() {
 			pos.x = 0;
 		}
 		players[i].setCur(pos);
-
+		empty = true;
 		for(int p = 0; p < 2; ++p) {
+			if(players[i].getGoal().x == pos.x && players[i].getGoal().y == pos.y) {
+				empty = false;
+			}
 			for(int a = 0; a < 3; ++a) {
 				if(arrows[p][a].isActive()) {
 					if(arrows[p][a].getPos().x == pos.x && arrows[p][a].getPos().y == pos.y) {

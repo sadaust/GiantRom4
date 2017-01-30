@@ -14,10 +14,14 @@ private:
 	spriteStruct ren;
 	imageAsset* assets[creatureTypes];
 public:
+	void init();
 	bool isActive() {return active;}
+	void deactivate() {active = false;}
 	void spawn(char type, char direction, vector loc);
 	void setDir(char dir);
+	char getDir() {return dir;}
 	vector nextPos();
+	vector curPos() {return pos;}
 	void update();
-	void render();
+	renInfo getRen();
 };

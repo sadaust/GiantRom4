@@ -8,6 +8,7 @@ private:
 	vector goalPos;
 	vector cPos;
 	spriteStruct cursor;
+	spriteStruct base;
 	D3DXCOLOR color;
 public:
 	void init();
@@ -20,8 +21,9 @@ public:
 	int win() {wins += 1;}
 	void setGoal(int x, int y) {goalPos.x = x; goalPos.y = y; goalPos.z = 0;}
 	vector getGoal() {return goalPos;}
-	void setColor(D3DXCOLOR pColor) {color = pColor; cursor.color = color;}
+	void setColor(D3DXCOLOR pColor) {color = pColor; cursor.color = color;base.color = color;}
 	renInfo getRen();
+	renInfo baseRen();
 	void setCur(vector pos) {cPos = pos;}
 	vector getCur() {return cPos;};
 };
