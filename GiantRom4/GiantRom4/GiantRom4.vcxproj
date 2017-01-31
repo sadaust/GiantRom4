@@ -93,6 +93,7 @@
     <ClInclude Include="ResourceDefines.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Sound.h" />
+    <ClInclude Include="Spawner.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Arrow.cpp" />

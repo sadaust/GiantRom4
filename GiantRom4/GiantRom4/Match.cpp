@@ -40,18 +40,25 @@ void Match::init() {
 	Engine::instance()->bind(NP_2,inputInfo[1][6].c_str());
 	Engine::instance()->bind(NP_1,inputInfo[1][7].c_str());
 
-	D3DXCOLOR playerCol[2];
+	D3DXCOLOR playerCol[MAXIMUMPLAYERS];
 
 	playerCol[0] = 0xFFFF0000;
 	playerCol[1] = 0xFF0000FF;
+	playerCol[2] = 0xFF00FF00;
+	playerCol[3] = 0xFFF7F83C;
 
-	for(int i = 0; i < 2; ++i) {
+	// make settings for these later
+	numplayers = 2;
+	numarrows = 3;
+	arrowdecaytime = 6.0f;
+
+	for(int i = 0; i < numplayers; ++i) {
 		players[i].init();
 		players[i].setColor(playerCol[i]);
 		players[i].setCur(vector(3+(5*i),4,0));
 		players[i].setGoal(3+(5*i),4);
 		curArrow[i] = 0;
-		for(int z = 0; z < 3; ++z) {
+		for(int z = 0; z < numarrows; ++z) {
 			arrows[i][z].init();
 			arrows[i][z].setColor(playerCol[i]);
 		}
@@ -69,7 +76,7 @@ void Match::render() {
 	vector vec;
 	D3DXMATRIX mat;
 	D3DXMATRIX rot;
-	for(int i = 0; i < 2; ++i) {
+	for(int i = 0; i < numplayers; ++i) {
 		D3DXMatrixIdentity(&mat);
 		ren = players[i].getRen();
 		vec = players[i].getCur();
@@ -85,13 +92,16 @@ void Match::render() {
 		D3DXMatrixMultiply(&ren.matrix,&ren.matrix,&mat);
 		Engine::instance()->addRender(ren);
 
-		for(int z = 0; z < 3; ++z) {
+		for(int z = 0; z < numarrows; ++z) {
 			if(arrows[i][z].isActive()) {
 				D3DXMatrixIdentity(&mat);
 				D3DXMatrixIdentity(&rot);
 				ren = arrows[i][z].getRen();
 				vec = arrows[i][z].getPos();
-				D3DXMatrixScaling(&ren.matrix,gridWidth/256.0f,gridHeight/256.0f,1);
+				if (arrows[i][z].getDecayTimeLeft() < SMALLARROWTIME)
+					D3DXMatrixScaling(&ren.matrix, (gridWidth / 256.0f) * SMALLARROWMULTIPLIER, (gridHeight / 256.0f) * SMALLARROWMULTIPLIER, 1);
+				else
+					D3DXMatrixScaling(&ren.matrix,gridWidth/256.0f,gridHeight/256.0f,1);
 				D3DXMatrixTranslation(&mat,vec.x*gridWidth+(gridWidth*0.5f),vec.y*gridHeight+(gridHeight*0.5f),0);
 				D3DXMatrixRotationZ(&rot,D3DXToRadian(90.0f*arrows[i][z].getRot()));
 				D3DXMatrixMultiply(&ren.matrix,&ren.matrix,&rot);
@@ -105,7 +115,10 @@ void Match::render() {
 void Match::update() {
 	vector pos;
 	bool empty = true;
-	for(int i = 0; i < 2; ++i) {
+	for(int i = 0; i < numplayers; ++i) {
+		for (int g = 0; g < numarrows; ++g) {
+			arrows[i][g].update();
+		}
 		pos = players[i].getCur();
 		if(Engine::instance()->getFlags(inputInfo[i][0].c_str())&buttonFlags::_repeat) {
 			pos.y -= 1;
@@ -131,11 +144,11 @@ void Match::update() {
 		}
 		players[i].setCur(pos);
 		empty = true;
-		for(int p = 0; p < 2; ++p) {
+		for(int p = 0; p < numplayers; ++p) {
 			if(players[i].getGoal().x == pos.x && players[i].getGoal().y == pos.y) {
 				empty = false;
 			}
-			for(int a = 0; a < 3; ++a) {
+			for(int a = 0; a < numarrows; ++a) {
 				if(arrows[p][a].isActive()) {
 					if(arrows[p][a].getPos().x == pos.x && arrows[p][a].getPos().y == pos.y) {
 						empty = false;
@@ -144,22 +157,48 @@ void Match::update() {
 			}
 		}
 		if(empty) {
-			if(Engine::instance()->getFlags(inputInfo[i][4].c_str())&buttonFlags::_repeat) {
-				arrows[i][curArrow[i]].setLoc(0,pos);
-				curArrow[i] += 1;
-			} else if(Engine::instance()->getFlags(inputInfo[i][5].c_str())&buttonFlags::_repeat) {
-				arrows[i][curArrow[i]].setLoc(1,pos);
-				curArrow[i] += 1;
-			} else if(Engine::instance()->getFlags(inputInfo[i][6].c_str())&buttonFlags::_repeat) {
-				arrows[i][curArrow[i]].setLoc(2,pos);
-				curArrow[i] += 1;
-			} else if(Engine::instance()->getFlags(inputInfo[i][7].c_str())&buttonFlags::_repeat) {
-				arrows[i][curArrow[i]].setLoc(3,pos);
-				curArrow[i] += 1;
-			}
-			if(curArrow[i] >= 3) {
-				curArrow[i] = 0;
+			for (int g = 4; g < 8; ++g) {
+				if (Engine::instance()->getFlags(inputInfo[i][g].c_str())&buttonFlags::_repeat) {
+					snapToNextAvailableArrow(i);
+					//if (arrows[i][curArrow[i]].isActive())
+					//	arrows[i][curArrow[i]].setActive
+					arrows[i][curArrow[i]].activate(arrowdecaytime, g - 4, pos);
+				}
 			}
 		}
 	}
+}
+
+
+void Match::snapToNextAvailableArrow(int a_player) {
+	int startingarrow = curArrow[a_player];
+	int temp = startingarrow;
+	bool done = false;
+
+	while (!done) {
+		if (!arrows[a_player][temp].isActive()) {
+			done = true;
+		}
+
+		if (!done) {
+			temp++;
+			if (temp >= numarrows) {
+				temp = 0;
+			}
+			if (temp == startingarrow) {
+				done = true;
+				temp++;
+				if (temp >= numarrows) {
+					temp = 0;
+				}
+			}
+
+		}
+	}
+
+	curArrow[a_player] = temp;
+
+
+
+
 }

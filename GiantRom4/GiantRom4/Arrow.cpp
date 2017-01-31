@@ -23,6 +23,14 @@ void Arrow::init() {
 	spri.color = color;
 }
 
+void Arrow::activate(double decaytime, char a_rot, vector a_pos) {
+	setDecayTime(decaytime);
+	setLoc(a_rot,a_pos);
+	lasttimeupdated = Engine::instance()->dt();
+	setActive(true);
+}
+
+
 bool Arrow::isActive() {
 	return active;
 }
@@ -35,6 +43,21 @@ vector Arrow::getPos() {
 	return pos;
 }
 
+double Arrow::getDecayTimeLeft() {
+	return decaytimeleft;
+}
+
+
+void Arrow::update() {
+	if (isActive()) {
+		decaytimeleft -= Engine::instance()->dt();
+		//lasttimeupdated = Engine::instance()->dt()/1000;
+		if (decaytimeleft < 0)
+			setActive(false);
+	}
+}
+
+
 void Arrow::setLoc(char r, vector p) {
 	pos = p;
 	rot = r;
@@ -45,6 +68,11 @@ void Arrow::setColor(D3DXCOLOR col) {
 	color = col;
 	spri.color = color;
 }
+
+void Arrow::setDecayTime(double a_decaytime) {
+	decaytimeleft = a_decaytime;
+}
+
 
 renInfo Arrow::getRen() {
 	renInfo ren;
