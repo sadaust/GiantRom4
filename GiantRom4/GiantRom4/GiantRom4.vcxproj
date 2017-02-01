@@ -81,6 +81,7 @@
     <ClInclude Include="Arrow.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Creature.h" />
+    <ClInclude Include="CreatureMan.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Graphics.h" />
@@ -99,6 +100,7 @@
     <ClCompile Include="Arrow.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Creature.cpp" />
+    <ClCompile Include="CreatureMan.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Graphics.cpp" />
@@ -110,6 +112,7 @@
     <ClCompile Include="RenVector.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="Spawner.cpp" />
     <ClCompile Include="winMain.cpp" />
   </ItemGroup>
   <ItemGroup>

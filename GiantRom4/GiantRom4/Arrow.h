@@ -9,7 +9,6 @@ private:
 	D3DXCOLOR color;
 	bool active;
 	double decaytimeleft;
-	double lasttimeupdated;
 public:
 	Arrow();
 	void init();

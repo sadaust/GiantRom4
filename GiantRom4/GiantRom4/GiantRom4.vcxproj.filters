@@ -75,6 +75,9 @@
     <ClInclude Include="Spawner.h">
       <Filter>Header Files\ChuChu</Filter>
     </ClInclude>
+    <ClInclude Include="CreatureMan.h">
+      <Filter>Header Files\ChuChu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp">
@@ -120,6 +123,12 @@
       <Filter>Source Files\ChuChu</Filter>
     </ClCompile>
     <ClCompile Include="Creature.cpp">
+      <Filter>Source Files\ChuChu</Filter>
+    </ClCompile>
+    <ClCompile Include="Spawner.cpp">
+      <Filter>Source Files\ChuChu</Filter>
+    </ClCompile>
+    <ClCompile Include="CreatureMan.cpp">
       <Filter>Source Files\ChuChu</Filter>
     </ClCompile>
   </ItemGroup>

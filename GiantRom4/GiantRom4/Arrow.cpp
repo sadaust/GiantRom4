@@ -26,7 +26,6 @@ void Arrow::init() {
 void Arrow::activate(double decaytime, char a_rot, vector a_pos) {
 	setDecayTime(decaytime);
 	setLoc(a_rot,a_pos);
-	lasttimeupdated = Engine::instance()->dt();
 	setActive(true);
 }
 
