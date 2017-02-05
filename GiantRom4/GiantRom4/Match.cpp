@@ -19,6 +19,24 @@ void Match::init() {
 	inputInfo[1][5] = "right2";
 	inputInfo[1][6] = "down2";
 	inputInfo[1][7] = "left2";
+	//p3Binds
+	inputInfo[1][0] = "c-Y3";
+	inputInfo[1][1] = "c+Y3";
+	inputInfo[1][2] = "c-X3";
+	inputInfo[1][3] = "c+X3";
+	inputInfo[1][4] = "up3";
+	inputInfo[1][5] = "right3";
+	inputInfo[1][6] = "down3";
+	inputInfo[1][7] = "left3";
+	//p4Binds
+	inputInfo[1][0] = "c-Y4";
+	inputInfo[1][1] = "c+Y4";
+	inputInfo[1][2] = "c-X4";
+	inputInfo[1][3] = "c+X4";
+	inputInfo[1][4] = "up4";
+	inputInfo[1][5] = "right4";
+	inputInfo[1][6] = "down4";
+	inputInfo[1][7] = "left4";
 
 
 
@@ -30,15 +48,41 @@ void Match::init() {
 	Engine::instance()->bind(H,inputInfo[0][5].c_str());
 	Engine::instance()->bind(G,inputInfo[0][6].c_str());
 	Engine::instance()->bind(F,inputInfo[0][7].c_str());
+	Engine::instance()->bind(pad4_LYp,inputInfo[0][0].c_str());
+	Engine::instance()->bind(pad4_LYn,inputInfo[0][1].c_str());
+	Engine::instance()->bind(pad4_LXn,inputInfo[0][2].c_str());
+	Engine::instance()->bind(pad4_LXp,inputInfo[0][3].c_str());
+	Engine::instance()->bind(pad4_Y,inputInfo[0][4].c_str());
+	Engine::instance()->bind(pad4_B,inputInfo[0][5].c_str());
+	Engine::instance()->bind(pad4_A,inputInfo[0][6].c_str());
+	Engine::instance()->bind(pad4_X,inputInfo[0][7].c_str());
 
-	Engine::instance()->bind(UP,inputInfo[1][0].c_str());
-	Engine::instance()->bind(DOWN,inputInfo[1][1].c_str());
-	Engine::instance()->bind(LEFT,inputInfo[1][2].c_str());
-	Engine::instance()->bind(RIGHT,inputInfo[1][3].c_str());
-	Engine::instance()->bind(NP_5,inputInfo[1][4].c_str());
-	Engine::instance()->bind(NP_3,inputInfo[1][5].c_str());
-	Engine::instance()->bind(NP_2,inputInfo[1][6].c_str());
-	Engine::instance()->bind(NP_1,inputInfo[1][7].c_str());
+	Engine::instance()->bind(pad1_LYp,inputInfo[1][0].c_str());
+	Engine::instance()->bind(pad1_LYn,inputInfo[1][1].c_str());
+	Engine::instance()->bind(pad1_LXn,inputInfo[1][2].c_str());
+	Engine::instance()->bind(pad1_LXp,inputInfo[1][3].c_str());
+	Engine::instance()->bind(pad1_Y,inputInfo[1][4].c_str());
+	Engine::instance()->bind(pad1_B,inputInfo[1][5].c_str());
+	Engine::instance()->bind(pad1_A,inputInfo[1][6].c_str());
+	Engine::instance()->bind(pad1_X,inputInfo[1][7].c_str());
+
+	Engine::instance()->bind(pad2_LYp,inputInfo[2][0].c_str());
+	Engine::instance()->bind(pad2_LYn,inputInfo[2][1].c_str());
+	Engine::instance()->bind(pad2_LXn,inputInfo[2][2].c_str());
+	Engine::instance()->bind(pad2_LXp,inputInfo[2][3].c_str());
+	Engine::instance()->bind(pad2_Y,inputInfo[2][4].c_str());
+	Engine::instance()->bind(pad2_B,inputInfo[2][5].c_str());
+	Engine::instance()->bind(pad2_A,inputInfo[2][6].c_str());
+	Engine::instance()->bind(pad2_X,inputInfo[2][7].c_str());
+
+	Engine::instance()->bind(pad3_LYp,inputInfo[3][0].c_str());
+	Engine::instance()->bind(pad3_LYn,inputInfo[3][1].c_str());
+	Engine::instance()->bind(pad3_LXn,inputInfo[3][2].c_str());
+	Engine::instance()->bind(pad3_LXp,inputInfo[3][3].c_str());
+	Engine::instance()->bind(pad3_Y,inputInfo[3][4].c_str());
+	Engine::instance()->bind(pad3_B,inputInfo[3][5].c_str());
+	Engine::instance()->bind(pad3_A,inputInfo[3][6].c_str());
+	Engine::instance()->bind(pad3_X,inputInfo[3][7].c_str());
 
 	D3DXCOLOR playerCol[MAXIMUMPLAYERS];
 

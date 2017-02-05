@@ -35,11 +35,11 @@ void Game::init() {
 	tRect.right = 0.75f;
 	tRect.top = 0.45f;
 	tRect.bottom = tRect.top+buttonHeight;
-	mainMenu.addButton(play,"Puzzle",tRect,DT_CENTER|DT_VCENTER|DT_NOCLIP,bColor,hColor);
+	mainMenu.addButton(none,"Puzzle",tRect,DT_CENTER|DT_VCENTER|DT_NOCLIP,bColor,hColor);
 	//add multiplayer button
 	tRect.top = tRect.bottom+buttonGap;
 	tRect.bottom = tRect.top+buttonHeight;
-	mainMenu.addButton(none,"Versus",tRect,DT_CENTER|DT_VCENTER|DT_NOCLIP,bColor,hColor);
+	mainMenu.addButton(play,"Versus",tRect,DT_CENTER|DT_VCENTER|DT_NOCLIP,bColor,hColor);
 	//add Credits button
 	tRect.top = tRect.bottom+buttonGap;
 	tRect.bottom = tRect.top+buttonHeight;
