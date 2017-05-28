@@ -92,6 +92,18 @@ struct vector {
 		}
 		return false;
 	}
+	bool operator==(vector &other) {
+		if (x != other.x) {
+			return false;
+		}
+		else if (y != other.y) {
+			return false;
+		}
+		else if (z != other.z) {
+			return false;
+		}
+		return true;
+	}
 	vector() {
 		x = y = z = 0;
 	}

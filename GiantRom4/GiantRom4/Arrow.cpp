@@ -57,14 +57,14 @@ void Arrow::update() {
 }
 
 
-void Arrow::setLoc(char r, vector p) {
-	pos = p;
-	rot = r;
+void Arrow::setLoc(char a_rot, vector a_pos) {
+	pos = a_pos;
+	rot = a_rot;
 	active = true;
 }
 
-void Arrow::setColor(D3DXCOLOR col) {
-	color = col;
+void Arrow::setColor(D3DXCOLOR a_col) {
+	color = a_col;
 	spri.color = color;
 }
 

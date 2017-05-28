@@ -8,16 +8,18 @@
 class Spawner {
 private:
 	vector pos;
-	char rot;
 	spriteStruct spri;
 	D3DXCOLOR color;
+	bool active;
 public:
 	Spawner();
-	void init(vector a_pos, char a_rot);
+	void init();
+	void activate(vector a_pos);
 	void update();
 	void setPos(vector a_pos);
-	void setRot(char a_rot);
+	void setColor(D3DXCOLOR a_col);
+	void setActive(bool a_active);
 	vector getPos();
-	char getRot();
 	renInfo getRen();
+	bool isActive();
 };

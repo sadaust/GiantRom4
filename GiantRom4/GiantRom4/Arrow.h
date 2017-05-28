@@ -20,7 +20,7 @@ public:
 	void update();
 	void setLoc(char a_rot,vector a_pos);
 	void setActive(bool aActive) {active = aActive;}
-	void setColor(D3DXCOLOR col);
+	void setColor(D3DXCOLOR a_col);
 	void setDecayTime(double a_decaytime);
 	renInfo getRen();
 };
