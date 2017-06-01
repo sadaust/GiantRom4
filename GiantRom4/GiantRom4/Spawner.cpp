@@ -7,12 +7,12 @@ Spawner::Spawner() {
 	color = 0xFFFFFFFF;
 	active = false;
 	spri.image = 0;
+	dir = 0;
 }
 
 
 void Spawner::init() {
 	active = false;
-
 	spri.image = (imageAsset*)((Engine::instance()->getResource("spawner.png", 0xFF000000))->resource);
 
 	spri.rec.left = 0;
@@ -28,9 +28,10 @@ void Spawner::init() {
 }
 
 
-void Spawner::activate(vector a_pos){
+void Spawner::activate(vector a_pos, char a_dir){
 	setPos(a_pos);
 	setActive(true);
+	setDir(a_dir);
 }
 
 
@@ -44,6 +45,11 @@ void Spawner::update() {
 
 void Spawner::setPos(vector a_pos) {
 	pos = a_pos;
+}
+
+
+void Spawner::setDir(char a_dir) {
+	dir = a_dir;
 }
 
 
@@ -70,6 +76,11 @@ renInfo Spawner::getRen() {
 	ren.type = screenSprite;
 	D3DXMatrixIdentity(&ren.matrix);
 	return ren;
+}
+
+
+char Spawner::getDir() {
+	return dir;
 }
 
 

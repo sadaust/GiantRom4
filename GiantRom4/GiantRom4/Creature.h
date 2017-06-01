@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine.h"
+#include "ChompDefines.h"
 
 //#define creatureTypes 3
 #define PUPTYPE 0
@@ -12,20 +13,21 @@ private:
 	char dir;
 	vector pos;
 	bool active;
-	double timeSinceUpdate;
 	float speed;
-	//spriteStruct ren;
-	//imageAsset* assets[creatureTypes];
+	spriteStruct spri[NUMCARDINALDIRECTIONS];
 public:
+	Creature();
+	Creature(char a_type, char a_dir, vector a_loc);
 	void init();
 	bool isActive();
 	void deactivate();
-	void spawn(char type, char direction, vector loc);
-	void setDir(char dir);
+	void spawn(char a_type, char a_direction, vector a_loc);
+	void setDir(char a_dir);
 	char getDir();
 	void setSpeed(float a_speed);
 	vector nextPos(float a_speedmultiplier);
+	void setPos(vector a_pos);
 	vector curPos();
-	void update();
+	void update(float a_speedmultiplier);
 	//renInfo getRen();
 };

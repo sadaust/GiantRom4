@@ -79,7 +79,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Arrow.h" />
+    <ClInclude Include="ArrowMan.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="ChompDefines.h" />
     <ClInclude Include="Creature.h" />
     <ClInclude Include="CreatureMan.h" />
     <ClInclude Include="Engine.h" />
@@ -98,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Arrow.cpp" />
+    <ClCompile Include="ArrowMan.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Creature.cpp" />
     <ClCompile Include="CreatureMan.cpp" />

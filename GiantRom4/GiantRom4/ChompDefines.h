@@ -1,0 +1,16 @@
+#pragma once
+
+
+#define MAPSIZE_X 12
+#define MAPSIZE_Y 9
+#define MAXIMUMPLAYERS 4
+#define SMALLARROWTIME 2
+#define SMALLARROWMULTIPLIER 0.6f
+#define MAXIMUMARROWS 6
+#define NUMCARDINALDIRECTIONS 4
+#define PUPSPEED 1.0f
+#define RORIESPEED 0.7f
+
+
+
+

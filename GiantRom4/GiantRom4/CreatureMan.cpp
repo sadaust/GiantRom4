@@ -2,30 +2,49 @@
 
 
 
+
 CreatureMan::CreatureMan() {
-	numtospawn = 0;
-	timebetweenspawns = 0.001f;
+	minTimeBetweenSpawns = 0.0f;
+	maxTimeBetweenSpawns = 0.01f;
 	speedmultiplier = 1.0f;
 }
 
 
-void CreatureMan::init() {
+void CreatureMan::Init(float a_minTimeBetweenSpawns, float a_maxTimeBetweenSpawns, float a_speedmultiplier) {
+	minTimeBetweenSpawns = a_minTimeBetweenSpawns;
+	maxTimeBetweenSpawns = a_maxTimeBetweenSpawns;
+	speedmultiplier = a_speedmultiplier;
+}
+
+
+void CreatureMan::Update() {
 
 }
 
 
-void CreatureMan::update() {
+void CreatureMan::Render() {
 
 }
 
 
-void CreatureMan::addspawns(int a_spawns) {
-	numtospawn += a_spawns;
-	if (numtospawn > MAXTOSPAWN)
-		numtospawn = MAXTOSPAWN;
+void CreatureMan::setSpeed(float a_speed) {
+	speedmultiplier = a_speed;
 }
 
 
+void CreatureMan::addSpawner(Spawner a_spawn) {
+	spawners.push_back(a_spawn);
+}
+
+
+void CreatureMan::ClearCreatures() {
+	creatures.clear();
+}
+
+
+void CreatureMan::ClearSpawners() {
+	spawners.clear();
+}
 
 
 
