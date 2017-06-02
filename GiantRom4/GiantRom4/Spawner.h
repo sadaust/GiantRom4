@@ -8,21 +8,22 @@
 class Spawner {
 private:
 	vector pos;
-	spriteStruct spri;
 	char dir;
-	D3DXCOLOR color;
-	bool active;
+	float timetospawn;
+	bool active, spawnnow;
 public:
 	Spawner();
-	void init();
+	Spawner(vector a_pos, char a_dir, bool a_active);
+	void Init(vector a_pos, char a_dir, bool a_active);
 	void activate(vector a_pos, char a_dir);
-	void update();
+	void Update();
+	void setNewTimeToSpawn(float a_min, float a_max);
 	void setPos(vector a_pos);
 	void setDir(char a_dir);
-	void setColor(D3DXCOLOR a_col);
 	void setActive(bool a_active);
 	vector getPos();
-	renInfo getRen();
 	char getDir();
 	bool isActive();
+	bool doISpawn();
+	void resetDoISpawn();
 };

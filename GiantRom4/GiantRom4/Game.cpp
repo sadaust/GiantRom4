@@ -49,6 +49,7 @@ void Game::init() {
 	tRect.bottom = tRect.top+buttonHeight;
 	mainMenu.addButton(quit,"Quit",tRect,DT_CENTER|DT_VCENTER|DT_NOCLIP,bColor,hColor);
 	state = 0;
+	srand(time(NULL));
 }
 
 void Game::shutdown() {

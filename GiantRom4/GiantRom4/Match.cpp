@@ -126,7 +126,7 @@ void Match::init() {
 	for (int i = 0; i < numplayers; ++i) {
 		arrowman.DisallowSpace(players[i].getGoal());
 	}
-
+	creatureman.Init(gridWidth, gridHeight, DEFAULTMINSPAWNTIME, DEFAULTMAXSPAWNTIME, 1.0f);
 
 	//for (int i = 0; i < numspawners; ++i) {
 	//	spawners[i].init();
@@ -171,6 +171,7 @@ void Match::render() {
 	//	}
 	//}
 	arrowman.Render();
+	creatureman.Render();
 }
 
 void Match::update() {
@@ -222,4 +223,5 @@ void Match::update() {
 	//	}
 	//}
 	arrowman.Update();
+	creatureman.Update();
 }

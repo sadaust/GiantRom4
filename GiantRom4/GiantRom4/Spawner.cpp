@@ -4,27 +4,20 @@
 
 
 Spawner::Spawner() {
-	color = 0xFFFFFFFF;
 	active = false;
-	spri.image = 0;
 	dir = 0;
 }
 
 
-void Spawner::init() {
-	active = false;
-	spri.image = (imageAsset*)((Engine::instance()->getResource("spawner.png", 0xFF000000))->resource);
+Spawner::Spawner(vector a_pos, char a_dir, bool a_active) {
+	Init(a_pos, a_dir, a_active);
+}
 
-	spri.rec.left = 0;
-	spri.rec.top = 0;
-	spri.rec.right = spri.image->texInfo.Width;
-	spri.rec.bottom = spri.image->texInfo.Height;
 
-	spri.center.x = spri.rec.right / 2;
-	spri.center.y = spri.rec.bottom / 2;
-	spri.center.z = 0;
+void Spawner::Init(vector a_pos, char a_dir, bool a_active) {
+	active = a_active;
 
-	spri.color = color;
+	spawnnow = false;
 }
 
 
@@ -35,11 +28,20 @@ void Spawner::activate(vector a_pos, char a_dir){
 }
 
 
-void Spawner::update() {
+void Spawner::Update() {
+	timetospawn -= Engine::instance()->dt();
+	if (timetospawn <= 0) {
+		spawnnow = true;
+	}
 	// put code here for different spawning modes.
 	// Random will have a percent chance of spawning each tick.
 	// Constant will have a set interval before a new spawn.
 	// Dog mode, rorie mode, cluster mode, insanity mode, direction mode, etc. Mode is held outside of spawner and can probably be passed in.
+}
+
+
+void Spawner::setNewTimeToSpawn(float a_min, float a_max) {
+	timetospawn = a_min + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (a_min - a_max)));
 }
 
 
@@ -53,12 +55,6 @@ void Spawner::setDir(char a_dir) {
 }
 
 
-void Spawner::setColor(D3DXCOLOR a_col) {
-	color = a_col;
-	spri.color = color;
-}
-
-
 void Spawner::setActive(bool a_active) {
 	active = a_active;
 }
@@ -66,16 +62,6 @@ void Spawner::setActive(bool a_active) {
 
 vector Spawner::getPos() {
 	return pos;
-}
-
-
-renInfo Spawner::getRen() {
-	renInfo ren;
-
-	ren.asset = &spri;
-	ren.type = screenSprite;
-	D3DXMatrixIdentity(&ren.matrix);
-	return ren;
 }
 
 
@@ -87,3 +73,21 @@ char Spawner::getDir() {
 bool Spawner::isActive() {
 	return active;
 }
+
+
+bool Spawner::doISpawn() {
+	return spawnnow;
+}
+
+
+void Spawner::resetDoISpawn() {
+	spawnnow = false;
+}
+
+
+
+
+
+
+
+

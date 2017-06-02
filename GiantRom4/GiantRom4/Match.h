@@ -16,6 +16,7 @@ private:
 	int numspawners;
 	Player players[MAXIMUMPLAYERS];
 	ArrowMan arrowman;
+	CreatureMan creatureman;
 	std::string inputInfo[MAXIMUMPLAYERS][8];
 	std::string debugInputInfo[NUMCARDINALDIRECTIONS];
 public:
