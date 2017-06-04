@@ -16,7 +16,8 @@ Spawner::Spawner(vector a_pos, char a_dir, bool a_active) {
 
 void Spawner::Init(vector a_pos, char a_dir, bool a_active) {
 	active = a_active;
-
+	pos = a_pos;
+	dir = a_dir;
 	spawnnow = false;
 }
 

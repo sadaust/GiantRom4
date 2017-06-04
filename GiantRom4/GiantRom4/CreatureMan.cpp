@@ -9,7 +9,24 @@ CreatureMan::CreatureMan() {
 	speedmultiplier = 1.0f;
 
 
+}
 
+
+void CreatureMan::Init(float a_gridwidth, float a_gridheight, float a_minTimeBetweenSpawns, float a_maxTimeBetweenSpawns, float a_speedmultiplier) {
+	gridWidth = a_gridwidth;
+	gridHeight = a_gridheight;
+
+	minTimeBetweenSpawns = a_minTimeBetweenSpawns;
+	maxTimeBetweenSpawns = a_maxTimeBetweenSpawns;
+
+	spawners.push_back(Spawner(vector(7, 5, 0), 0, true));
+	spawners[0].setNewTimeToSpawn(minTimeBetweenSpawns,maxTimeBetweenSpawns);
+	spawners.push_back(Spawner(vector(1, 1, 0), 2, true));
+	spawners[1].setNewTimeToSpawn(minTimeBetweenSpawns, maxTimeBetweenSpawns);
+	spawners.push_back(Spawner(vector(9, 1, 0), 3, true));
+	spawners[2].setNewTimeToSpawn(minTimeBetweenSpawns, maxTimeBetweenSpawns);
+
+	speedmultiplier = a_speedmultiplier;
 	creaturesprites[0][0].image = (imageAsset*)((Engine::instance()->getResource("pupup.png", 0xFF000000))->resource);
 	creaturesprites[0][0].rec.left = 0;
 	creaturesprites[0][0].rec.top = 0;
@@ -98,24 +115,6 @@ CreatureMan::CreatureMan() {
 }
 
 
-void CreatureMan::Init(float a_gridwidth, float a_gridheight, float a_minTimeBetweenSpawns, float a_maxTimeBetweenSpawns, float a_speedmultiplier) {
-	gridWidth = a_gridwidth;
-	gridHeight = a_gridheight;
-
-	minTimeBetweenSpawns = a_minTimeBetweenSpawns;
-	maxTimeBetweenSpawns = a_maxTimeBetweenSpawns;
-
-	spawners.push_back(Spawner(vector(7, 5, 0), 0, true));
-	spawners[0].setNewTimeToSpawn(minTimeBetweenSpawns,maxTimeBetweenSpawns);
-	spawners.push_back(Spawner(vector(1, 1, 0), 2, true));
-	spawners[1].setNewTimeToSpawn(minTimeBetweenSpawns, maxTimeBetweenSpawns);
-	spawners.push_back(Spawner(vector(9, 1, 0), 3, true));
-	spawners[2].setNewTimeToSpawn(minTimeBetweenSpawns, maxTimeBetweenSpawns);
-
-	speedmultiplier = a_speedmultiplier;
-}
-
-
 void CreatureMan::Update() {
 	for (int i = 0; i < spawners.size(); ++i) {
 		if (spawners[i].isActive()) {
@@ -127,6 +126,9 @@ void CreatureMan::Update() {
 			}
 		}
 	}
+	for (int i = 0; i < creatures.size(); ++i) {
+		creatures[i].update(speedmultiplier);
+	}
 }
 
 
@@ -134,32 +136,32 @@ void CreatureMan::Render() {
 	renInfo ren;
 	vector vec;
 	D3DXMATRIX mat;
-	//for (int i = 0; i < spawners.size(); ++i) {
-	//	if (spawners[i].isActive()) {
-	//		ren.type = screenSprite;
-	//		D3DXMatrixIdentity(&mat);
-	//		D3DXMatrixIdentity(&ren.matrix);
-	//		ren.asset = &spawnersprite;
-	//		vec = spawners[i].getPos();
-	//		D3DXMatrixScaling(&ren.matrix, (gridWidth / 256.0f), (gridHeight / 256.0f), 1);
-	//		D3DXMatrixTranslation(&mat, vec.x*gridWidth + (gridWidth*0.5f), vec.y*gridHeight + (gridHeight*0.5f), 0);
-	//		D3DXMatrixMultiply(&ren.matrix, &ren.matrix, &mat);
-	//		Engine::instance()->addRender(ren);
-	//	}
-	//}
-	//for (int i = 0; i < creatures.size(); ++i) {
-	//	if (creatures[i].isActive()) {
-	//		D3DXMatrixIdentity(&mat);
-	//		ren.asset = &creaturesprites[creatures[i].getType()][creatures[i].getDir()];
-	//		ren.type = screenSprite;
-	//		D3DXMatrixIdentity(&ren.matrix);
-	//		vec = creatures[i].getPos();
-	//		D3DXMatrixScaling(&ren.matrix, (gridWidth / 256.0f), (gridHeight / 256.0f), 1);
-	//		D3DXMatrixTranslation(&mat, vec.x*gridWidth + (gridWidth*0.5f), vec.y*gridHeight + (gridHeight*0.5f), 0);
-	//		D3DXMatrixMultiply(&ren.matrix, &ren.matrix, &mat);
-	//		Engine::instance()->addRender(ren);
-	//	}
-	//}
+	for (int i = 0; i < spawners.size(); ++i) {
+		if (spawners[i].isActive()) {
+			ren.type = screenSprite;
+			D3DXMatrixIdentity(&mat);
+			D3DXMatrixIdentity(&ren.matrix);
+			ren.asset = &spawnersprite;
+			vec = spawners[i].getPos();
+			D3DXMatrixScaling(&ren.matrix, (gridWidth / 256.0f), (gridHeight / 256.0f), 1);
+			D3DXMatrixTranslation(&mat, vec.x*gridWidth + (gridWidth*0.5f), vec.y*gridHeight + (gridHeight*0.5f), 0);
+			D3DXMatrixMultiply(&ren.matrix, &ren.matrix, &mat);
+			Engine::instance()->addRender(ren);
+		}
+	}
+	for (int i = 0; i < creatures.size(); ++i) {
+		if (creatures[i].isActive()) {
+			D3DXMatrixIdentity(&mat);
+			ren.asset = &creaturesprites[creatures[i].getType()][creatures[i].getDir()];
+			ren.type = screenSprite;
+			D3DXMatrixIdentity(&ren.matrix);
+			vec = creatures[i].getPos();
+			D3DXMatrixScaling(&ren.matrix, (gridWidth / 256.0f), (gridHeight / 256.0f), 1);
+			D3DXMatrixTranslation(&mat, vec.x*gridWidth + (gridWidth*0.5f), vec.y*gridHeight + (gridHeight*0.5f), 0);
+			D3DXMatrixMultiply(&ren.matrix, &ren.matrix, &mat);
+			Engine::instance()->addRender(ren);
+		}
+	}
 }
 
 

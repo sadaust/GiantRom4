@@ -31,7 +31,10 @@ void Creature::spawn(char a_type, char a_direction, vector a_loc) {
 	type = a_type;
 	dir = a_direction;
 	pos = a_loc;
-	speed = 0;
+	if (type == 0)
+		speed = PUPSPEED;
+	if (type == 1)
+		speed = RORIESPEED;
 	active = true;
 
 }
