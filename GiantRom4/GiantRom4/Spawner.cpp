@@ -42,7 +42,7 @@ void Spawner::Update() {
 
 
 void Spawner::setNewTimeToSpawn(float a_min, float a_max) {
-	timetospawn = a_min + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (a_min - a_max)));
+	timetospawn = a_min + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (a_max - a_min)));
 }
 
 

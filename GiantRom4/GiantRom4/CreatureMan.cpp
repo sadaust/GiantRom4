@@ -156,7 +156,7 @@ void CreatureMan::Render() {
 			ren.type = screenSprite;
 			D3DXMatrixIdentity(&ren.matrix);
 			vec = creatures[i].getPos();
-			D3DXMatrixScaling(&ren.matrix, (gridWidth / 256.0f), (gridHeight / 256.0f), 1);
+			D3DXMatrixScaling(&ren.matrix, SMALLPUPMULTIPLIER * (gridWidth / 256.0f), SMALLPUPMULTIPLIER * (gridHeight / 256.0f), 1);
 			D3DXMatrixTranslation(&mat, vec.x*gridWidth + (gridWidth*0.5f), vec.y*gridHeight + (gridHeight*0.5f), 0);
 			D3DXMatrixMultiply(&ren.matrix, &ren.matrix, &mat);
 			Engine::instance()->addRender(ren);

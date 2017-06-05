@@ -84,6 +84,9 @@
     <ClInclude Include="ChompDefines.h">
       <Filter>Header Files\ChuChu</Filter>
     </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>Header Files\ChuChu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp">
@@ -138,6 +141,9 @@
       <Filter>Source Files\ChuChu</Filter>
     </ClCompile>
     <ClCompile Include="ArrowMan.cpp">
+      <Filter>Source Files\ChuChu</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
       <Filter>Source Files\ChuChu</Filter>
     </ClCompile>
   </ItemGroup>

@@ -97,6 +97,7 @@
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Spawner.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Arrow.cpp" />
@@ -116,6 +117,7 @@
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Spawner.cpp" />
+    <ClCompile Include="Wall.cpp" />
     <ClCompile Include="winMain.cpp" />
   </ItemGroup>
   <ItemGroup>
