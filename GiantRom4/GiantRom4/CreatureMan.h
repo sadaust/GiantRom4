@@ -1,6 +1,7 @@
 #pragma once
 #include "Creature.h"
 #include "Spawner.h"
+#include "Wall.h"
 
 
 
@@ -15,10 +16,16 @@ private:
 	std::vector <Creature> creatures;
 	std::vector <Spawner> spawners;
 	std::vector <float> timetospawn; // for each spawner.
+	std::vector <Wall> walls;
 	float minTimeBetweenSpawns, maxTimeBetweenSpawns;
 	float speedmultiplier;
 	spriteStruct creaturesprites[NUMCREATURETYPES][NUMCREATURESPRITES];
 	spriteStruct spawnersprite;
+	spriteStruct wallsprite;
+
+	vector startpos, curpos, nextpos;
+	float distancetogo;
+	char creadirection;
 
 	void ClearCreatures();
 	void ClearSpawners();

@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine.h"
+#include "Wall.h"
 #include "ChompDefines.h"
 
 //#define creatureTypes 3
@@ -26,8 +27,11 @@ public:
 	char getType();
 	void setSpeed(float a_speed);
 	vector nextPos(float a_speedmultiplier);
+	float distanceToTravel(float a_speedmultiplier);
+	bool doICrossTheLine(float a_distancetotravel);
 	void setPos(vector a_pos);
 	vector getPos();
 	void update(float a_speedmultiplier);
+	void update(float a_speedmultiplier, std::vector <Wall> & a_walls);
 	//renInfo getRen();
 };
