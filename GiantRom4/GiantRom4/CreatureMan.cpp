@@ -19,22 +19,26 @@ void CreatureMan::Init(float a_gridwidth, float a_gridheight, float a_minTimeBet
 	minTimeBetweenSpawns = a_minTimeBetweenSpawns;
 	maxTimeBetweenSpawns = a_maxTimeBetweenSpawns;
 
-	spawners.push_back(Spawner(vector(7, 5, 0), 0, true));
+	spawners.push_back(Spawner(vector(5, 5, 0), 0, true));
 	spawners[0].setNewTimeToSpawn(minTimeBetweenSpawns,maxTimeBetweenSpawns);
-	spawners.push_back(Spawner(vector(1, 1, 0), 2, true));
+	spawners.push_back(Spawner(vector(1, 1, 0), 1, true));
 	spawners[1].setNewTimeToSpawn(minTimeBetweenSpawns, maxTimeBetweenSpawns);
 	spawners.push_back(Spawner(vector(9, 1, 0), 3, true));
 	spawners[2].setNewTimeToSpawn(minTimeBetweenSpawns, maxTimeBetweenSpawns);
 
-	walls.push_back(Wall(vector(1, 1, 0), true));
+	walls.push_back(Wall(vector(1, 1, 0), false));
 	walls.push_back(Wall(vector(2, 1, 0), true));
 	walls.push_back(Wall(vector(3, 1, 0), true));
 	walls.push_back(Wall(vector(4, 1, 0), true));
 	walls.push_back(Wall(vector(5, 1, 0), true));
-	walls.push_back(Wall(vector(7, 1, 0), true));
+	walls.push_back(Wall(vector(6, 1, 0), false));
+	walls.push_back(Wall(vector(8, 1, 0), false));
+	walls.push_back(Wall(vector(7, 2, 0), true));
 	walls.push_back(Wall(vector(5, 5, 0), true));
-	walls.push_back(Wall(vector(1, 3, 0), true));
+	walls.push_back(Wall(vector(1, 5, 0), true));
 	walls.push_back(Wall(vector(0, 5, 0), false));
+	walls.push_back(Wall(vector(8, 0, 0), false));
+	walls.push_back(Wall(vector(6, 1, 0), true));
 
 
 
@@ -179,14 +183,16 @@ void CreatureMan::Render() {
 		D3DXMatrixIdentity(&ren.matrix);
 		ren.asset = &wallsprite;
 		vec = walls[i].getPos();
-		D3DXMatrixScaling(&ren.matrix, (gridWidth / 256.0f), (gridHeight / 256.0f), 1);
 		if (!walls[i].amIHorizontal()) {
+			D3DXMatrixScaling(&ren.matrix, (gridHeight / 256.0f), (gridWidth / 256.0f), 1);
 			D3DXMatrixRotationZ(&rot, D3DXToRadian(90.0f));
 			D3DXMatrixMultiply(&ren.matrix, &ren.matrix, &rot);
 			D3DXMatrixTranslation(&mat, vec.x*gridWidth/* + (gridWidth*0.5f)*/, vec.y*gridHeight + (gridHeight*0.5f), 0);
 		}
-		else
+		else {
+			D3DXMatrixScaling(&ren.matrix, (gridWidth / 256.0f), (gridHeight / 256.0f), 1);
 			D3DXMatrixTranslation(&mat, vec.x*gridWidth + (gridWidth*0.5f), vec.y*gridHeight/* + (gridHeight*0.5f)*/, 0);
+		}
 		D3DXMatrixMultiply(&ren.matrix, &ren.matrix, &mat);
 		Engine::instance()->addRender(ren);
 	}

@@ -31,6 +31,14 @@ void Creature::spawn(char a_type, char a_direction, vector a_loc) {
 	type = a_type;
 	dir = a_direction;
 	pos = a_loc;
+	if (dir == 0)
+		pos.y += AVERYTINYNUMBER;
+	else if (dir == 1)
+		pos.x -= AVERYTINYNUMBER;
+	else if (dir == 2)
+		pos.y -= AVERYTINYNUMBER;
+	else if (dir == 3)
+		pos.x += AVERYTINYNUMBER;
 	if (type == 0)
 		speed = PUPSPEED;
 	if (type == 1)
@@ -88,24 +96,32 @@ bool Creature::doICrossTheLine(float a_distancetotravel) {
 	}
 	switch (dir) {
 	case 0:
+		if (pos.y == round(pos.y))
+			return true;
 		target = floor(pos.y);
 		if (target < pos.y - a_distancetotravel)
 			return false;
 		else
 			return true;
 	case 1:
+		if (pos.x == round(pos.x))
+			return true;
 		target = ceil(pos.x);
 		if (target > pos.x + a_distancetotravel)
 			return false;
 		else
 			return true;
 	case 2:
+		if (pos.y == round(pos.y))
+			return true;
 		target = ceil(pos.y);
 		if (target > pos.y + a_distancetotravel)
 			return false;
 		else
 			return true;
 	case 3:
+		if (pos.x == round(pos.x))
+			return true;
 		target = floor(pos.x);
 		if (target < pos.x - a_distancetotravel)
 			return false;
@@ -136,7 +152,7 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls) {
 	bool collisiondir;
 	vector tempwallpos;
 	float traveldistance = distanceToTravel(a_speedmultiplier);
-	char newdirection = dir;
+	char newdirection = dir, numcollisions = 0;
 	bool donemoving = false, collided;
 	while (!donemoving) {
 		collided = false;
@@ -146,10 +162,20 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls) {
 			if (pos.y - traveldistance <= 0.0f) {
 				traveldistance -= abs(pos.y);
 				pos.y = 0.0f;
-				newdirection += 1;
+				if (numcollisions == 0) // if you're colliding for the first time, turn right. (right from the forward you are currently facing)
+					newdirection += 1;
+				else if (numcollisions == 1)// if you're colliding for the second time turn left. (backwards from the right you are currently facing)
+					newdirection += 2;
+				else if (numcollisions == 2)// if you're colliding for the third time turn backwards. (left from the left you are currently facing)
+					newdirection -= 1;
 				if (newdirection >= NUMCARDINALDIRECTIONS)
-					newdirection = 0;
+					newdirection -= NUMCARDINALDIRECTIONS;
+				else if (newdirection < 0)
+					newdirection += NUMCARDINALDIRECTIONS;
 				collided = true;
+				++numcollisions;
+				if (numcollisions > COLLISIONRESET)
+					numcollisions = 0;
 			}
 			for (int i = 0; i < a_walls.size() && !collided; ++i) {
 				if (collisiondir == a_walls[i].amIHorizontal()) {
@@ -158,10 +184,22 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls) {
 						if (tempwallpos.y < pos.y && tempwallpos.y >= pos.y - traveldistance) {
 							traveldistance -= abs(pos.y - tempwallpos.y);
 							pos.y = tempwallpos.y;
-							newdirection += 1;
+							pos.x -= AVERYTINYNUMBER;
+							traveldistance += AVERYTINYNUMBER;
+							if (numcollisions == 0) // if you're colliding for the first time, turn right. (right from the forward you are currently facing)
+								newdirection += 1;
+							else if (numcollisions == 1)// if you're colliding for the second time turn left. (backwards from the right you are currently facing)
+								newdirection += 2;
+							else if (numcollisions == 2)// if you're colliding for the third time turn backwards. (left from the left you are currently facing)
+								newdirection -= 1;
 							if (newdirection >= NUMCARDINALDIRECTIONS)
-								newdirection = 0;
+								newdirection -= NUMCARDINALDIRECTIONS;
+							else if (newdirection < 0)
+								newdirection += NUMCARDINALDIRECTIONS;
 							collided = true;
+							++numcollisions;
+							if (numcollisions > COLLISIONRESET)
+								numcollisions = 0;
 						}
 					}
 				}
@@ -173,25 +211,47 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls) {
 			break;
 		case 1:
 			collisiondir = false;
-			if (pos.x + traveldistance >= MAPSIZE_X) {
-				traveldistance -= abs(MAPSIZE_X - pos.x);
-				pos.x = MAPSIZE_X;
-				newdirection += 1;
+			if (pos.x + traveldistance >= MAPSIZE_X-1.0f) {
+				traveldistance -= abs((MAPSIZE_X - 1.0f) - pos.x);
+				pos.x = MAPSIZE_X - 1.0f;
+				if (numcollisions == 0) // if you're colliding for the first time, turn right. (right from the forward you are currently facing)
+					newdirection += 1;
+				else if (numcollisions == 1)// if you're colliding for the second time turn left. (backwards from the right you are currently facing)
+					newdirection += 2;
+				else if (numcollisions == 2)// if you're colliding for the third time turn backwards. (left from the left you are currently facing)
+					newdirection -= 1;
 				if (newdirection >= NUMCARDINALDIRECTIONS)
-					newdirection = 0;
+					newdirection -= NUMCARDINALDIRECTIONS;
+				else if (newdirection < 0)
+					newdirection += NUMCARDINALDIRECTIONS;
 				collided = true;
+				++numcollisions;
+				if (numcollisions > COLLISIONRESET)
+					numcollisions = 0;
 			}
 			for (int i = 0; i < a_walls.size() && !collided; ++i) {
 				if (collisiondir == a_walls[i].amIHorizontal()) {
 					tempwallpos = a_walls[i].getPos();
 					if (tempwallpos.y == pos.y) {
-						if (tempwallpos.x > pos.x && tempwallpos.x <= pos.x + traveldistance) {
+						if (tempwallpos.x - 1.0f > pos.x && tempwallpos.x - 1.0f <= pos.x + traveldistance) {
 							traveldistance -= abs(tempwallpos.x - pos.x);
-							pos.x = tempwallpos.x;
-							newdirection += 1;
+							pos.x = tempwallpos.x - 1.0f;
+							pos.y -= AVERYTINYNUMBER;
+							traveldistance += AVERYTINYNUMBER;
+							if (numcollisions == 0) // if you're colliding for the first time, turn right. (right from the forward you are currently facing)
+								newdirection += 1;
+							else if (numcollisions == 1)// if you're colliding for the second time turn left. (backwards from the right you are currently facing)
+								newdirection += 2;
+							else if (numcollisions == 2)// if you're colliding for the third time turn backwards. (left from the left you are currently facing)
+								newdirection -= 1;
 							if (newdirection >= NUMCARDINALDIRECTIONS)
-								newdirection = 0;
+								newdirection -= NUMCARDINALDIRECTIONS;
+							else if (newdirection < 0)
+								newdirection += NUMCARDINALDIRECTIONS;
 							collided = true;
+							++numcollisions;
+							if (numcollisions > COLLISIONRESET)
+								numcollisions = 0;
 						}
 					}
 				}
@@ -206,22 +266,44 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls) {
 			if (pos.y + traveldistance >= MAPSIZE_Y) {
 				traveldistance -= abs(MAPSIZE_Y - pos.y);
 				pos.y = MAPSIZE_Y;
-				newdirection += 1;
+				if (numcollisions == 0) // if you're colliding for the first time, turn right. (right from the forward you are currently facing)
+					newdirection += 1;
+				else if (numcollisions == 1)// if you're colliding for the second time turn left. (backwards from the right you are currently facing)
+					newdirection += 2;
+				else if (numcollisions == 2)// if you're colliding for the third time turn backwards. (left from the left you are currently facing)
+					newdirection -= 1;
 				if (newdirection >= NUMCARDINALDIRECTIONS)
-					newdirection = 0;
+					newdirection -= NUMCARDINALDIRECTIONS;
+				else if (newdirection < 0)
+					newdirection += NUMCARDINALDIRECTIONS;
 				collided = true;
+				++numcollisions;
+				if (numcollisions > COLLISIONRESET)
+					numcollisions = 0;
 			}
 			for (int i = 0; i < a_walls.size() && !collided; ++i) {
 				if (collisiondir == a_walls[i].amIHorizontal()) {
 					tempwallpos = a_walls[i].getPos();
 					if (tempwallpos.x == pos.x) {
-						if (tempwallpos.y > pos.y && tempwallpos.y <= pos.y + traveldistance) {
+						if (tempwallpos.y - 1.0f > pos.y && tempwallpos.y - 1.0f <= pos.y + traveldistance) {
 							traveldistance -= abs(tempwallpos.y - pos.y);
-							pos.y = tempwallpos.y;
-							newdirection += 1;
+							pos.y = tempwallpos.y - 1.0f;
+							pos.x += AVERYTINYNUMBER;
+							traveldistance += AVERYTINYNUMBER;
+							if (numcollisions == 0) // if you're colliding for the first time, turn right. (right from the forward you are currently facing)
+								newdirection += 1;
+							else if (numcollisions == 1)// if you're colliding for the second time turn left. (backwards from the right you are currently facing)
+								newdirection += 2;
+							else if (numcollisions == 2)// if you're colliding for the third time turn backwards. (left from the left you are currently facing)
+								newdirection -= 1;
 							if (newdirection >= NUMCARDINALDIRECTIONS)
-								newdirection = 0;
+								newdirection -= NUMCARDINALDIRECTIONS;
+							else if (newdirection < 0)
+								newdirection += NUMCARDINALDIRECTIONS;
 							collided = true;
+							++numcollisions;
+							if (numcollisions > COLLISIONRESET)
+								numcollisions = 0;
 						}
 					}
 				}
@@ -236,22 +318,44 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls) {
 			if (pos.x - traveldistance <= 0.0f) {
 				traveldistance -= abs(pos.x);
 				pos.x = 0.0f;
-				newdirection += 1;
+				if (numcollisions == 0) // if you're colliding for the first time, turn right. (right from the forward you are currently facing)
+					newdirection += 1;
+				else if (numcollisions == 1)// if you're colliding for the second time turn left. (backwards from the right you are currently facing)
+					newdirection += 2;
+				else if (numcollisions == 2)// if you're colliding for the third time turn backwards. (left from the left you are currently facing)
+					newdirection -= 1;
 				if (newdirection >= NUMCARDINALDIRECTIONS)
-					newdirection = 0;
+					newdirection -= NUMCARDINALDIRECTIONS;
+				else if (newdirection < 0)
+					newdirection += NUMCARDINALDIRECTIONS;
 				collided = true;
+				++numcollisions;
+				if (numcollisions > COLLISIONRESET)
+					numcollisions = 0;
 			}
 			for (int i = 0; i < a_walls.size() && !collided; ++i) {
 				if (collisiondir == a_walls[i].amIHorizontal()) {
 					tempwallpos = a_walls[i].getPos();
 					if (tempwallpos.y == pos.y) {
-						if (tempwallpos.x < pos.x && tempwallpos.x <= pos.x - traveldistance) {
+						if (tempwallpos.x < pos.x && tempwallpos.x >= pos.x - traveldistance) {
 							traveldistance -= abs(pos.x - tempwallpos.x);
 							pos.x = tempwallpos.x;
-							newdirection += 1;
+							pos.y += AVERYTINYNUMBER;
+							traveldistance += AVERYTINYNUMBER;
+							if (numcollisions == 0) // if you're colliding for the first time, turn right. (right from the forward you are currently facing)
+								newdirection += 1;
+							else if (numcollisions == 1)// if you're colliding for the second time turn left. (backwards from the right you are currently facing)
+								newdirection += 2;
+							else if (numcollisions == 2)// if you're colliding for the third time turn backwards. (left from the left you are currently facing)
+								newdirection -= 1;
 							if (newdirection >= NUMCARDINALDIRECTIONS)
-								newdirection = 0;
+								newdirection -= NUMCARDINALDIRECTIONS;
+							else if (newdirection < 0)
+								newdirection += NUMCARDINALDIRECTIONS;
 							collided = true;
+							++numcollisions;
+							if (numcollisions > COLLISIONRESET)
+								numcollisions = 0;
 						}
 					}
 				}

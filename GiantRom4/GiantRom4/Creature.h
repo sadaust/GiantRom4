@@ -7,6 +7,7 @@
 #define PUPTYPE 0
 #define RORIETYPE 1
 #define SPECPUPTYPE 2
+#define COLLISIONRESET 3
 
 class Creature {
 private:
