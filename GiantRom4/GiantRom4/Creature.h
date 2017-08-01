@@ -17,6 +17,7 @@ private:
 	vector pos;
 	bool active;
 	float speed;
+	int lastarrow;
 public:
 	Creature();
 	Creature(char a_type, char a_dir, vector a_loc);

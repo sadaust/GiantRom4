@@ -44,6 +44,7 @@ void Creature::spawn(char a_type, char a_direction, vector a_loc) {
 	if (type == 1)
 		speed = RORIESPEED;
 	active = true;
+	lastarrow = -1;
 
 }
 
@@ -145,11 +146,13 @@ vector Creature::getPos() {
 
 void Creature::update(float a_speedmultiplier) {
 	setPos(nextPos(a_speedmultiplier));
+	lastarrow = -1;
 }
 
 
 void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std::vector <Arrow> & a_arrows) {
-	bool collisiondir, arrowcollided = false;
+	bool collisiondir, arrowcollided, directionchange;
+	std::vector <int> collidedArrows;
 	vector tempwallpos;
 	float traveldistance = distanceToTravel(a_speedmultiplier);
 	char newdirection = dir, numcollisions = 0;
@@ -157,11 +160,12 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 	while (!donemoving) {
 		collided = false;
 		arrowcollided = false;
+		directionchange = false;
 		switch (newdirection) {
 		case 0:
 			collisiondir = true;
-			for (int i = 0; i < a_arrows.size(); ++i) {
-				if (a_arrows[i].isActive()) {
+			for (int i = 0; i < a_arrows.size() && !arrowcollided; ++i) {
+				if (a_arrows[i].isActive() && i != lastarrow) {
 					tempwallpos = a_arrows[i].getPos();
 					if (a_arrows[i].getRot() != newdirection) {
 						if (tempwallpos.x == pos.x) {
@@ -170,7 +174,6 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 								pos.y = tempwallpos.y;
 								newdirection = a_arrows[i].getRot();
 								arrowcollided = true;
-								collided = true;
 								if (newdirection == 0)				// move slightly backwards according to your new direction
 									pos.y += AVERYTINYNUMBER;		// to facilitate colliding with walls correctly
 								else if (newdirection == 1)
@@ -180,12 +183,14 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 								else if (newdirection == 3)
 									pos.x += AVERYTINYNUMBER;
 								traveldistance += AVERYTINYNUMBER;
+								directionchange = true;
+								lastarrow = i;
 							}
 						}
 					}
 				}
 			}
-			if (pos.y - traveldistance <= 0.0f && !arrowcollided) {
+			if (pos.y - traveldistance <= 0.0f && !directionchange) {
 				traveldistance -= abs(pos.y);
 				pos.y = 0.0f;
 				if (numcollisions == 0) // if you're colliding for the first time, turn right. (right from the forward you are currently facing)
@@ -208,11 +213,12 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 				else if (newdirection == 3)
 					pos.x += AVERYTINYNUMBER;
 				traveldistance += AVERYTINYNUMBER;
+				directionchange = true;
 				++numcollisions;
 				if (numcollisions > COLLISIONRESET)
 					numcollisions = 0;
 			}
-			for (int i = 0; i < a_walls.size() && !collided && !arrowcollided; ++i) {
+			for (int i = 0; i < a_walls.size() && !collided && !directionchange; ++i) {
 				if (collisiondir == a_walls[i].amIHorizontal()) {
 					tempwallpos = a_walls[i].getPos();
 					if (tempwallpos.x == pos.x) {
@@ -239,6 +245,7 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 							else if (newdirection == 3)
 								pos.x += AVERYTINYNUMBER;
 							traveldistance += AVERYTINYNUMBER;
+							directionchange = true;
 							++numcollisions;
 							if (numcollisions > COLLISIONRESET)
 								numcollisions = 0;
@@ -246,15 +253,15 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 					}
 				}
 			}
-			if (!collided) {
+			if (!collided && !directionchange) {
 				pos.y -= traveldistance;
 				traveldistance = 0.0f;
 			}
 			break;
 		case 1:
 			collisiondir = false;
-			for (int i = 0; i < a_arrows.size(); ++i) {
-				if (a_arrows[i].isActive()) {
+			for (int i = 0; i < a_arrows.size() && !arrowcollided; ++i) {
+				if (a_arrows[i].isActive() && i != lastarrow) {
 					tempwallpos = a_arrows[i].getPos();
 					if (a_arrows[i].getRot() != newdirection) {
 						if (tempwallpos.y == pos.y) {
@@ -262,7 +269,7 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 								traveldistance -= abs(tempwallpos.x - pos.x);
 								pos.x = tempwallpos.x;
 								newdirection = a_arrows[i].getRot();
-								collided = true;
+								arrowcollided = true;
 								if (newdirection == 0)				// move slightly backwards according to your new direction
 									pos.y += AVERYTINYNUMBER;		// to facilitate colliding with walls correctly
 								else if (newdirection == 1)
@@ -272,12 +279,14 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 								else if (newdirection == 3)
 									pos.x += AVERYTINYNUMBER;
 								traveldistance += AVERYTINYNUMBER;
+								directionchange = true;
+								lastarrow = i;
 							}
 						}
 					}
 				}
 			}
-			if (pos.x + traveldistance >= MAPSIZE_X - 1.0f && !arrowcollided) {
+			if (pos.x + traveldistance >= MAPSIZE_X - 1.0f && !directionchange) {
 				traveldistance -= abs((MAPSIZE_X - 1.0f) - pos.x);
 				pos.x = MAPSIZE_X - 1.0f;
 				if (numcollisions == 0) // if you're colliding for the first time, turn right. (right from the forward you are currently facing)
@@ -300,11 +309,12 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 				else if (newdirection == 3)
 					pos.x += AVERYTINYNUMBER;
 				traveldistance += AVERYTINYNUMBER;
+				directionchange = true;
 				++numcollisions;
 				if (numcollisions > COLLISIONRESET)
 					numcollisions = 0;
 			}
-			for (int i = 0; i < a_walls.size() && !collided && !arrowcollided; ++i) {
+			for (int i = 0; i < a_walls.size() && !collided && !directionchange; ++i) {
 				if (collisiondir == a_walls[i].amIHorizontal()) {
 					tempwallpos = a_walls[i].getPos();
 					if (tempwallpos.y == pos.y) {
@@ -331,6 +341,7 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 							else if (newdirection == 3)
 								pos.x += AVERYTINYNUMBER;
 							traveldistance += AVERYTINYNUMBER;
+							directionchange = true;
 							++numcollisions;
 							if (numcollisions > COLLISIONRESET)
 								numcollisions = 0;
@@ -338,24 +349,23 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 					}
 				}
 			}
-			if (!collided) {
+			if (!collided && !directionchange) {
 				pos.x += traveldistance;
 				traveldistance = 0.0f;
 			}
 			break;
 		case 2:
 			collisiondir = true;
-			for (int i = 0; i < a_arrows.size(); ++i) {
-				if (a_arrows[i].isActive()) {
+			for (int i = 0; i < a_arrows.size() && !arrowcollided; ++i) {
+				if (a_arrows[i].isActive() && i != lastarrow) {
 					tempwallpos = a_arrows[i].getPos();
 					if (a_arrows[i].getRot() != newdirection) {
 						if (tempwallpos.x == pos.x) {
 							if (tempwallpos.y > pos.y && tempwallpos.y <= pos.y + traveldistance) {
 								traveldistance -= abs(tempwallpos.y - pos.y);
 								pos.y = tempwallpos.y;
-
 								newdirection = a_arrows[i].getRot();
-								collided = true;
+								arrowcollided = true;
 								if (newdirection == 0)				// move slightly backwards according to your new direction
 									pos.y += AVERYTINYNUMBER;		// to facilitate colliding with walls correctly
 								else if (newdirection == 1)
@@ -365,12 +375,14 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 								else if (newdirection == 3)
 									pos.x += AVERYTINYNUMBER;
 								traveldistance += AVERYTINYNUMBER;
+								directionchange = true;
+								lastarrow = i;
 							}
 						}
 					}
 				}
 			}
-			if (pos.y + traveldistance >= MAPSIZE_Y && !arrowcollided) {
+			if (pos.y + traveldistance >= MAPSIZE_Y && !directionchange) {
 				traveldistance -= abs(MAPSIZE_Y - pos.y);
 				pos.y = MAPSIZE_Y;
 				if (numcollisions == 0) // if you're colliding for the first time, turn right. (right from the forward you are currently facing)
@@ -393,11 +405,12 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 				else if (newdirection == 3)
 					pos.x += AVERYTINYNUMBER;
 				traveldistance += AVERYTINYNUMBER;
+				directionchange = true;
 				++numcollisions;
 				if (numcollisions > COLLISIONRESET)
 					numcollisions = 0;
 			}
-			for (int i = 0; i < a_walls.size() && !collided && !arrowcollided; ++i) {
+			for (int i = 0; i < a_walls.size() && !collided && !directionchange; ++i) {
 				if (collisiondir == a_walls[i].amIHorizontal()) {
 					tempwallpos = a_walls[i].getPos();
 					if (tempwallpos.x == pos.x) {
@@ -424,6 +437,7 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 							else if (newdirection == 3)
 								pos.x += AVERYTINYNUMBER;
 							traveldistance += AVERYTINYNUMBER;
+							directionchange = true;
 							++numcollisions;
 							if (numcollisions > COLLISIONRESET)
 								numcollisions = 0;
@@ -431,15 +445,15 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 					}
 				}
 			}
-			if (!collided) {
+			if (!collided && !directionchange) {
 				pos.y += traveldistance;
 				traveldistance = 0.0f;
 			}
 			break;
 		case 3:
 			collisiondir = false;
-			for (int i = 0; i < a_arrows.size(); ++i) {
-				if (a_arrows[i].isActive()) {
+			for (int i = 0; i < a_arrows.size() && !arrowcollided; ++i) {
+				if (a_arrows[i].isActive() && i != lastarrow) {
 					tempwallpos = a_arrows[i].getPos();
 					if (a_arrows[i].getRot() != newdirection) {
 						if (tempwallpos.y == pos.y) {
@@ -447,7 +461,7 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 								traveldistance -= abs(pos.x - tempwallpos.x);
 								pos.x = tempwallpos.x;
 								newdirection = a_arrows[i].getRot();
-								collided = true;
+								arrowcollided = true;
 								if (newdirection == 0)				// move slightly backwards according to your new direction
 									pos.y += AVERYTINYNUMBER;		// to facilitate colliding with walls correctly
 								else if (newdirection == 1)
@@ -457,12 +471,14 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 								else if (newdirection == 3)
 									pos.x += AVERYTINYNUMBER;
 								traveldistance += AVERYTINYNUMBER;
+								directionchange = true;
+								lastarrow = i;
 							}
 						}
 					}
 				}
 			}
-			if (pos.x - traveldistance <= 0.0f && !arrowcollided) {
+			if (pos.x - traveldistance <= 0.0f && !directionchange) {
 				traveldistance -= abs(pos.x);
 				pos.x = 0.0f;
 				if (numcollisions == 0) // if you're colliding for the first time, turn right. (right from the forward you are currently facing)
@@ -485,11 +501,12 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 				else if (newdirection == 3)
 					pos.x += AVERYTINYNUMBER;
 				traveldistance += AVERYTINYNUMBER;
+				directionchange = true;
 				++numcollisions;
 				if (numcollisions > COLLISIONRESET)
 					numcollisions = 0;
 			}
-			for (int i = 0; i < a_walls.size() && !collided && !arrowcollided; ++i) {
+			for (int i = 0; i < a_walls.size() && !collided && !directionchange; ++i) {
 				if (collisiondir == a_walls[i].amIHorizontal()) {
 					tempwallpos = a_walls[i].getPos();
 					if (tempwallpos.y == pos.y) {
@@ -516,6 +533,7 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 							else if (newdirection == 3)
 								pos.x += AVERYTINYNUMBER;
 							traveldistance += AVERYTINYNUMBER;
+							directionchange = true;
 							++numcollisions;
 							if (numcollisions > COLLISIONRESET)
 								numcollisions = 0;
@@ -523,7 +541,7 @@ void Creature::update(float a_speedmultiplier, std::vector <Wall> & a_walls, std
 					}
 				}
 			}
-			if (!collided && !arrowcollided) {
+			if (!collided && !directionchange) {
 				pos.x -= traveldistance;
 				traveldistance = 0.0f;
 			}
