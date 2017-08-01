@@ -79,11 +79,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Arrow.h" />
-    <ClInclude Include="ArrowMan.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="ChompDefines.h" />
     <ClInclude Include="Creature.h" />
-    <ClInclude Include="CreatureMan.h" />
+    <ClInclude Include="GameplayMan.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Graphics.h" />
@@ -101,10 +100,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Arrow.cpp" />
-    <ClCompile Include="ArrowMan.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Creature.cpp" />
-    <ClCompile Include="CreatureMan.cpp" />
+    <ClCompile Include="GameplayMan.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Graphics.cpp" />

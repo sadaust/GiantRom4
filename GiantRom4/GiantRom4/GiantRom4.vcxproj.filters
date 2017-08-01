@@ -75,16 +75,13 @@
     <ClInclude Include="Spawner.h">
       <Filter>Header Files\ChuChu</Filter>
     </ClInclude>
-    <ClInclude Include="CreatureMan.h">
-      <Filter>Header Files\ChuChu</Filter>
-    </ClInclude>
-    <ClInclude Include="ArrowMan.h">
-      <Filter>Header Files\ChuChu</Filter>
-    </ClInclude>
     <ClInclude Include="ChompDefines.h">
       <Filter>Header Files\ChuChu</Filter>
     </ClInclude>
     <ClInclude Include="Wall.h">
+      <Filter>Header Files\ChuChu</Filter>
+    </ClInclude>
+    <ClInclude Include="GameplayMan.h">
       <Filter>Header Files\ChuChu</Filter>
     </ClInclude>
   </ItemGroup>
@@ -137,13 +134,10 @@
     <ClCompile Include="Spawner.cpp">
       <Filter>Source Files\ChuChu</Filter>
     </ClCompile>
-    <ClCompile Include="CreatureMan.cpp">
-      <Filter>Source Files\ChuChu</Filter>
-    </ClCompile>
-    <ClCompile Include="ArrowMan.cpp">
-      <Filter>Source Files\ChuChu</Filter>
-    </ClCompile>
     <ClCompile Include="Wall.cpp">
+      <Filter>Source Files\ChuChu</Filter>
+    </ClCompile>
+    <ClCompile Include="GameplayMan.cpp">
       <Filter>Source Files\ChuChu</Filter>
     </ClCompile>
   </ItemGroup>

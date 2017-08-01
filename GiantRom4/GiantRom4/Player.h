@@ -21,6 +21,7 @@ public:
 	int win() {wins += 1;}
 	void setGoal(int x, int y) {goalPos.x = x; goalPos.y = y; goalPos.z = 0;}
 	vector getGoal() {return goalPos;}
+	D3DXCOLOR getColor();
 	void setColor(D3DXCOLOR pColor) {color = pColor; cursor.color = color;base.color = color;}
 	renInfo getRen();
 	renInfo baseRen();

@@ -3,30 +3,35 @@
 Arrow::Arrow() {
 	color = 0xFFFFFFFF;
 	active = false;
-	spri.image = 0;
+
 }
+
+
+Arrow::Arrow(double a_decaytime, char a_rot, vector a_pos, int a_player, D3DXCOLOR a_color) {
+	active = false;
+	init(a_decaytime, a_rot, a_pos, a_player, a_color);
+}
+
 
 void Arrow::init() {
 	active = false;
-	
-	spri.image = (imageAsset*) ((Engine::instance()->getResource("arrow.png",0xFF000000))->resource);
-
-	spri.rec.left = 0;
-	spri.rec.top = 0;
-	spri.rec.right = spri.image->texInfo.Width;
-	spri.rec.bottom = spri.image->texInfo.Height;
-
-	spri.center.x = spri.rec.right/2;
-	spri.center.y = spri.rec.bottom/2;
-	spri.center.z = 0;
-
-	spri.color = color;
+	player = 0;
 }
 
-void Arrow::activate(double decaytime, char a_rot, vector a_pos) {
+
+void Arrow::init(double a_decaytime, char a_rot, vector a_pos, int a_player, D3DXCOLOR a_color) {
+	setDecayTime(a_decaytime);
+	setLoc(a_rot, a_pos);
+	setPlayer(a_player);
+	setColor(a_color);
+}
+
+
+void Arrow::activate(double decaytime, char a_rot, vector a_pos, int a_player) {
 	setDecayTime(decaytime);
 	setLoc(a_rot,a_pos);
 	setActive(true);
+	setPlayer(a_player);
 }
 
 
@@ -34,13 +39,21 @@ bool Arrow::isActive() {
 	return active;
 }
 
+
+int Arrow::getPlayer() {
+	return player;
+}
+
+
 char Arrow::getRot() {
 	return rot;
 }
 
+
 vector Arrow::getPos() {
 	return pos;
 }
+
 
 double Arrow::getDecayTimeLeft() {
 	return decaytimeleft;
@@ -57,27 +70,20 @@ void Arrow::update() {
 }
 
 
+void Arrow::setPlayer(int a_player) {
+	player = a_player;
+}
+
+
 void Arrow::setLoc(char a_rot, vector a_pos) {
 	pos = a_pos;
 	rot = a_rot;
-	active = true;
 }
 
 void Arrow::setColor(D3DXCOLOR a_col) {
 	color = a_col;
-	spri.color = color;
 }
 
 void Arrow::setDecayTime(double a_decaytime) {
 	decaytimeleft = a_decaytime;
-}
-
-
-renInfo Arrow::getRen() {
-	renInfo ren;
-
-	ren.asset = &spri;
-	ren.type = screenSprite;
-	D3DXMatrixIdentity(&ren.matrix);
-	return ren;
 }

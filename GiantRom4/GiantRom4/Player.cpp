@@ -45,3 +45,9 @@ renInfo Player::baseRen() {
 	}
 	return ren;
 }
+
+
+D3DXCOLOR Player::getColor() {
+	return color;
+}
+
