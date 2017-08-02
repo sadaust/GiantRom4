@@ -9,8 +9,8 @@
 #include "Engine.h"
 #include "Game.h"
 //windowed res
-#define W_SCREEN_WIDTH 1280
-#define W_SCREEN_HEIGHT 720
+#define W_SCREEN_WIDTH 1920
+#define W_SCREEN_HEIGHT 1080
 
 
 int SCREEN_WIDTH;

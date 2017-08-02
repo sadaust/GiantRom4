@@ -1,8 +1,8 @@
 #include "Match.h"
 
 void Match::init() {
-	gridWidth = Engine::instance()->getWidth()*0.75f;
-	gridHeight = Engine::instance()->getHeight()*0.75f;
+	gridWidth = Engine::instance()->getWidth()*0.85f;
+	gridHeight = Engine::instance()->getHeight()*0.85f;
 	gridWidth /= MAPSIZE_X;
 	gridHeight /= MAPSIZE_Y;
 	GameplayMan.Init(gridWidth, gridHeight, DEFAULTMINSPAWNTIME, DEFAULTMAXSPAWNTIME, SMALLARROWTIME * 2.0f,DEFAULTMINSPAWNTIME,DEFAULTMAXSPAWNTIME,1.0f,15);

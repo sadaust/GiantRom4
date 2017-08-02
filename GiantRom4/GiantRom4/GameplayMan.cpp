@@ -126,9 +126,14 @@ void GameplayMan::Init(float a_gridwidth, float a_gridheight, int a_numplayers, 
 	for (int i = 0; i < NumPlayers; ++i) {
 		players[i].init();
 		players[i].setColor(playerCol[i]);
-		players[i].setCur(vector(3 + (5 * i), 4, 0));
-		players[i].setGoal(3 + (5 * i), 4);
+		//players[i].setCur(vector(3 + (5 * i), 4, 0));
+		//players[i].setGoal(3 + (5 * i), 4);
 	}
+
+	players[0].setCur(vector(2, 7, 0));
+	players[0].setGoal(2, 7);
+	players[1].setCur(vector(13, 2, 0));
+	players[1].setGoal(13, 2);
 
 	//arrowman.Init(gridWidth, gridHeight, numplayers, numarrows, playerCol, arrowdecaytime);
 
@@ -153,26 +158,41 @@ void GameplayMan::Init(float a_gridwidth, float a_gridheight, int a_numplayers, 
 	minTimeBetweenSpawns = a_minTimeBetweenSpawns;
 	maxTimeBetweenSpawns = a_maxTimeBetweenSpawns;
 
-	spawners.push_back(Spawner(vector(5, 5, 0), 0, true));
+	spawners.push_back(Spawner(vector(15, 8, 0), 3, true));
 	spawners[0].setNewTimeToSpawn(minTimeBetweenSpawns,maxTimeBetweenSpawns);
 	spawners.push_back(Spawner(vector(1, 1, 0), 1, true));
 	spawners[1].setNewTimeToSpawn(minTimeBetweenSpawns, maxTimeBetweenSpawns);
-	spawners.push_back(Spawner(vector(9, 1, 0), 3, true));
-	spawners[2].setNewTimeToSpawn(minTimeBetweenSpawns, maxTimeBetweenSpawns);
+	//spawners.push_back(Spawner(vector(9, 1, 0), 3, true));
+	//spawners[2].setNewTimeToSpawn(minTimeBetweenSpawns, maxTimeBetweenSpawns);
 
-	walls.push_back(Wall(vector(1, 1, 0), false));
-	walls.push_back(Wall(vector(2, 1, 0), true));
-	walls.push_back(Wall(vector(3, 1, 0), true));
-	walls.push_back(Wall(vector(4, 1, 0), true));
-	walls.push_back(Wall(vector(5, 1, 0), true));
-	walls.push_back(Wall(vector(6, 1, 0), false));
-	walls.push_back(Wall(vector(8, 1, 0), false));
-	walls.push_back(Wall(vector(7, 2, 0), true));
-	walls.push_back(Wall(vector(5, 5, 0), true));
-	walls.push_back(Wall(vector(1, 5, 0), true));
-	walls.push_back(Wall(vector(0, 5, 0), false));
 	walls.push_back(Wall(vector(8, 0, 0), false));
-	walls.push_back(Wall(vector(6, 1, 0), true));
+	walls.push_back(Wall(vector(8, 1, 0), false));
+	walls.push_back(Wall(vector(0, 4, 0), true));
+	walls.push_back(Wall(vector(1, 4, 0), true));
+	walls.push_back(Wall(vector(2, 4, 0), true));
+	walls.push_back(Wall(vector(3, 4, 0), true));
+	walls.push_back(Wall(vector(12, 5, 0), true));
+	walls.push_back(Wall(vector(13, 5, 0), true));
+	walls.push_back(Wall(vector(14, 5, 0), true));
+	walls.push_back(Wall(vector(15, 5, 0), true));
+	walls.push_back(Wall(vector(9, 8, 0), false));
+	walls.push_back(Wall(vector(9, 9, 0), false));
+	//walls.push_back(Wall(vector(1, 1, 0), false));
+	//walls.push_back(Wall(vector(2, 1, 0), true));
+	//walls.push_back(Wall(vector(3, 1, 0), true));
+	//walls.push_back(Wall(vector(4, 1, 0), true));
+	//walls.push_back(Wall(vector(5, 1, 0), true));
+	//walls.push_back(Wall(vector(6, 1, 0), false));
+	//walls.push_back(Wall(vector(8, 1, 0), false));
+	//walls.push_back(Wall(vector(7, 2, 0), true));
+	//walls.push_back(Wall(vector(5, 5, 0), true));
+	//walls.push_back(Wall(vector(1, 5, 0), true));
+	//walls.push_back(Wall(vector(0, 5, 0), false));
+	//walls.push_back(Wall(vector(8, 0, 0), false));
+	//walls.push_back(Wall(vector(6, 1, 0), true));
+	//walls.push_back(Wall(vector(5, 5, 0), false));
+	//walls.push_back(Wall(vector(6, 5, 0), false));
+	//walls.push_back(Wall(vector(5, 6, 0), true));
 
 
 

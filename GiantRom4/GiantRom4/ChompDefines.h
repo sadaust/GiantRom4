@@ -1,7 +1,7 @@
 #pragma once
 
 
-#define MAPSIZE_X 12
+#define MAPSIZE_X 16
 #define MAPSIZE_Y 9
 #define MAXIMUMPLAYERS 4
 #define SMALLARROWTIME 2
